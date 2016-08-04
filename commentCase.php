@@ -51,7 +51,10 @@ if (isset($_GET['commentCase'])) {  //admin submitted form to add product
         $comments = getDataBySQL($com);
         $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
         $deputies = getDataBySQL($deputySQL);
-        echo "<table border=1>";
+        echo "<table border=1>"; //limit the size of the comments table
+        echo '<col width="150">';
+        echo '<col width="150">';
+        echo '<col width="500">';
         foreach($comments as $comment){
           echo "<tr>";
               

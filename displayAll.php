@@ -7,18 +7,21 @@ $sql = "SELECT * FROM `case` WHERE 1 = 1";
 /*
  * SQL LOGIC SECTION
  */
-if(!empty($_GET) && isset($_GET) && empty($_GET['victim']))
+if(!empty($_GET) && isset($_GET))
 {
     if(strcmp($_GET['victim'], "")!==0)
     {
         $sql .= " AND `victim` LIKE '%" . $_GET['victim'] . "%'";
     }
 }
+
+$sql .= " ORDER BY entryDate DESC";
+echo $sql;
 $records = getDataBySQL($sql);
 
 
 // Execute the query
-echo "<table class='sortable' border=1>";
+ echo "<table class='sortable' border=1>";
  echo "<th>Case Number</th>";		
  echo "<th>Victim</th>";		
  echo "<th>Crime</th>";		
@@ -53,12 +56,6 @@ foreach ($records as $record) {
   echo "<input type='hidden' name='caseID' value='".$record['caseID'] . "'/>";
   echo "<input type='submit' value='Comment On Case'/></form> </td>";
   
-  //DELETE CASE BUTTON
-  echo "<td> <form action=deleteCase.php>";
-  echo "<input type='hidden' name='caseID' value='".$record['caseID'] . "'/>";
-  echo "<input type='submit' value='Delete'/></form> </td>";
-  echo "</tr>";
-  echo "</tr>";
 } //endForeach
 echo "</table>";
 ?>

@@ -12,8 +12,11 @@ include 'dbConn.php';
 $connection = dbConn();
 
 function displayMyCases(){
+  /*
+  * SQL queries to retrieve pertinent cases
+  */
     if($_SESSION['rank'] == "Admin" || $_SESSION['rank'] == "Commander"){
-      $sql = "Select * FROM `case` ORDER BY entryDate DESC";
+      $sql = "Select * FROM `case` WHERE `active` = 1 ORDER BY entryDate DESC";
     }else{
       $sql = "Select * FROM `case` a WHERE a.assignedTo = " . $_SESSION['userID'] . " ORDER BY entryDate DESC";
     }
@@ -42,7 +45,7 @@ function displayMyCases(){
               $comments = getDataBySQL($com);
               $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
               $deputies = getDataBySQL($deputySQL);
-          echo "<td><table border=1>";
+          echo "<td><table border=1>"; //Limit the size of the comments table
           echo '<col width="150">';
           echo '<col width="150">';
           echo '<col width="500">';
@@ -78,7 +81,7 @@ function displayMyCases(){
           //DELETE CASE BUTTON
           echo "<td> <form action=archiveCase.php>";
           echo "<input type='hidden' name='caseID' value='".$record['caseID'] . "'/>";
-          echo "<input type='submit' value='Archive Case'/></form> </td>";
+          echo "<input type='submit' value='Finalize/Archive Case'/></form> </td>";
           echo "</tr>";
           echo "</tr>";
         } //endForeach
@@ -134,6 +137,11 @@ function displayMyCases(){
           <td>
             <form action="searchCases.php">
               <input type="submit" value="Search Cases" />
+            </form>
+          </td>
+          <td>
+            <form action="users.php">
+              <input type="submit" value="Add, Alter, Archive Users" />
             </form>
           </td>
         </tr>

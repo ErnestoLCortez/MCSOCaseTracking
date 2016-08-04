@@ -139,11 +139,13 @@ function displayMyCases(){
               <input type="submit" value="Search Cases" />
             </form>
           </td>
-          <td>
+          <?php if($_SESSION['rank'] == "Admin" || $_SESSION['rank'] == "Commander")
+          echo '<td>
             <form action="users.php">
               <input type="submit" value="Add, Alter, Archive Users" />
             </form>
-          </td>
+          </td>';
+          ?>
         </tr>
     </table>
       <br /><br />

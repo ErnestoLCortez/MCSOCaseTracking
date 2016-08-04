@@ -7,7 +7,7 @@ if (!isset($_SESSION['username'])) {  //checks whether user has logged in
     
 }
 include "dbConn.php";
-echo "<a href='main.php'>Home</a>";
+echo '<button onclick="history.go(-1);">Back </button>';
 $connection = dbConn(); 
 
 function displayAllCases(){
@@ -17,7 +17,7 @@ function displayAllCases(){
     if($_SESSION['rank'] == "Admin" || $_SESSION['rank'] == "Commander"){
       $sql = "Select * FROM `case` ORDER BY entryDate DESC";
     }else{
-      $sql = "Select * FROM `case` WHERE `active` = 1 ORDER BY entryDate DESC";
+      $sql = "Select * FROM `case` a WHERE a.assignedTo = " . $_SESSION['userID'];
     }
     
     $records = getDataBySQL($sql);
@@ -26,7 +26,7 @@ function displayAllCases(){
          echo "<th>Case Number</th>";		
          echo "<th>Victim</th>";		
          echo "<th>Crime</th>";		
-         echo "<th>Follow Up Date</th>";		
+         echo "<th>Assigned To</th>";		
          echo "<th>Complaint Action</th>";
          echo "<th>Comments</th>";
         foreach ($records as $record) {
@@ -34,8 +34,18 @@ function displayAllCases(){
           echo "<td>" . $record['caseNumber'] . "</td>"; 
           echo "<td>" . $record['victim'] . "</td>";
           echo "<td>" . $record['crime'] . "</td>";
-          echo "<td>" . $record['followUpDate'] . "</td>";
+          
+          //Display the detective assigned to the case
+          echo "<td>";
+            $adSQL = "Select * FROM `users` a WHERE a.userID = " . $record['assignedTo'];
+            $ad = getDataBySQL($adSQL);
+            foreach($ad as $ad1){
+                echo $ad1['rank'] . " " . $ad1['lastname'];
+            }
+          echo "</td>";
           echo "<td>" . $record['complaintAction'] . "</td>";
+          
+          //Comments table. Find comments associated with the primary key on the case number.
               $com = "Select * FROM `comments` a WHERE a.caseID = " . $record['caseID'] . " ORDER BY commentDate DESC";
               $comments = getDataBySQL($com);
               $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
@@ -103,7 +113,7 @@ function displayAllCases(){
 
             <th>Location</th>
 
-            <th>Detective</th>
+            <th>Assigned To</th>
         </tr>
         <tr>
             <td>
@@ -117,7 +127,7 @@ function displayAllCases(){
                 <input type="text"name="location" id="location">
             </td>
             <td>
-                <select name="reportingDeputy">
+                <select name="assignedTo" id="assignedTo">
                        <?php
                         $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
                         $deputies = getDataBySQL($deputySQL);
@@ -145,7 +155,7 @@ function displayAllCases(){
                     "victim": $("#victim").val(),
                     "suspect": $("#suspect").val(),
                     "location": $("#location").val(),
-                    "reportingDeputy": $("#reportingDeputy").val(),
+                    "assignedTo": $("#assignedTo").val(),
                 },
                 "success": function(data, status)
                 {
@@ -162,7 +172,7 @@ function displayAllCases(){
                     "victim": null,
                     "suspect": null,
                     "location": null,
-                    "reportingDeputy": null,
+                    "assignedTo": null,
                 },
                 "success": function(data, status)
                 {

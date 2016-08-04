@@ -1,8 +1,15 @@
 <?php
+session_start();
 include "dbConn.php";
 
 $connection = dbConn(); 
-$sql = "SELECT * FROM `case` WHERE 1 = 1";
+
+if($_SESSION['rank'] == "Admin" || $_SESSION['rank'] == "Commander"){
+      $sql = "Select * FROM `case` WHERE 1 = 1";
+}else{
+      $sql = "Select * FROM `case` a WHERE a.assignedTo = " . $_SESSION['userID'];
+}
+// $sql = "SELECT * FROM `case` WHERE 1 = 1";
 
 /*
  * SQL LOGIC SECTION
@@ -13,7 +20,20 @@ if(!empty($_GET) && isset($_GET))
     {
         $sql .= " AND `victim` LIKE '%" . $_GET['victim'] . "%'";
     }
+    if(strcmp($_GET['suspect'], "")!==0)
+    {
+        $sql .= " AND `suspect` LIKE '%" . $_GET['suspect'] . "%'";
+    }
+    if(strcmp($_GET['location'], "")!==0)
+    {
+        $sql .= " AND `location` LIKE '%" . $_GET['location'] . "%'";
+    }
+    if(strcmp($_GET['assignedTo'], "")!==0)
+    {
+        $sql .= " AND `assignedTo` = '" . $_GET['assignedTo'] . "'";
+    }
 }
+
 
 $sql .= " ORDER BY entryDate DESC";
 echo $sql;
@@ -25,7 +45,7 @@ $records = getDataBySQL($sql);
  echo "<th>Case Number</th>";		
  echo "<th>Victim</th>";		
  echo "<th>Crime</th>";		
- echo "<th>Follow Up Date</th>";		
+ echo "<th>Assigned To</th>";		
  echo "<th>Complaint Action</th>";
  echo "<th>Comments</th>";
 foreach ($records as $record) {
@@ -33,7 +53,15 @@ foreach ($records as $record) {
   echo "<td>" . $record['caseNumber'] . "</td>"; 
   echo "<td>" . $record['victim'] . "</td>";
   echo "<td>" . $record['crime'] . "</td>";
-  echo "<td>" . $record['followUpDate'] . "</td>";
+  //Display the detective assigned to the case
+  echo "<td>";
+    $adSQL = "Select * FROM `users` a WHERE a.userID = " . $record['assignedTo'];
+    $ad = getDataBySQL($adSQL);
+    foreach($ad as $ad1){
+        echo $ad1['rank'] . " " . $ad1['lastname'];
+    }
+  echo "</td>";
+          
   echo "<td>" . $record['complaintAction'] . "</td>";
       $com = "Select * FROM `comments` a WHERE a.caseID = " . $record['caseID'] . " ORDER BY commentDate DESC";
       $comments = getDataBySQL($com);

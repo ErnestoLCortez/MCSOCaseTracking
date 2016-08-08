@@ -4,10 +4,12 @@ include "dbConn.php";
 
 $connection = dbConn(); 
 
+
+$sql = "Select * FROM `case` WHERE 1 = 1";
 if($_SESSION['rank'] == "Admin" || $_SESSION['rank'] == "Commander"){
-      $sql = "Select * FROM `case` WHERE 1 = 1";
+      $sql .= " ORDER BY entryDate DESC";
 }else{
-      $sql = "Select * FROM `case` a WHERE a.assignedTo = " . $_SESSION['userID'];
+      $sql = "Select * FROM `case` a WHERE a.active = 0";
 }
 // $sql = "SELECT * FROM `case` WHERE 1 = 1";
 
@@ -23,6 +25,10 @@ if(!empty($_GET) && isset($_GET))
     if(strcmp($_GET['suspect'], "")!==0)
     {
         $sql .= " AND `suspect` LIKE '%" . $_GET['suspect'] . "%'";
+    }
+    if(strcmp($_GET['crime'], "")!==0)
+    {
+        $sql .= " AND `crime` LIKE '%" . $_GET['crime'] . "%'";
     }
     if(strcmp($_GET['location'], "")!==0)
     {

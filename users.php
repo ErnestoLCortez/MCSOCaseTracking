@@ -86,7 +86,9 @@ function displayAllUsers(){
         }
     ?>
     
-    
+    <form action="addUser.php">
+      <input type="submit" value="Add User" />    
+   </form>
     
     
     <!--List all Users-->

@@ -7,7 +7,7 @@ if (!isset($_SESSION['username'])) {  //checks whether user has logged in
     
 }
 include "dbConn.php";
-echo '<button onclick="history.go(-1);">Back </button>';
+echo "<a href='main.php'>Home</a>";
 $connection = dbConn(); 
 
 function displayAllCases(){
@@ -17,7 +17,7 @@ function displayAllCases(){
     if($_SESSION['rank'] == "Admin" || $_SESSION['rank'] == "Commander"){
       $sql = "Select * FROM `case` ORDER BY entryDate DESC";
     }else{
-      $sql = "Select * FROM `case` a WHERE a.assignedTo = " . $_SESSION['userID'];
+      $sql = "Select * FROM `case` a WHERE a.active = 0";
     }
     
     $records = getDataBySQL($sql);
@@ -110,6 +110,8 @@ function displayAllCases(){
             <th>Victim</th>
 
             <th>Suspect</th>
+            
+            <th>Crime</th>
 
             <th>Location</th>
 
@@ -122,7 +124,9 @@ function displayAllCases(){
             <td>
                 <input type="text"name="suspect" id="suspect">
             </td>
-            
+            <td>
+                <input type="text"name="crime" id="crime">
+            </td>
             <td>
                 <input type="text"name="location" id="location">
             </td>
@@ -131,6 +135,7 @@ function displayAllCases(){
                        <?php
                         $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
                         $deputies = getDataBySQL($deputySQL);
+                        echo '<option selected disabled hidden value=""></option>';
                         foreach($deputies as $deputy){
                           echo '<option value="' . $deputy['userID'] . '">' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
                         }
@@ -154,6 +159,7 @@ function displayAllCases(){
                 "data": {
                     "victim": $("#victim").val(),
                     "suspect": $("#suspect").val(),
+                    "crime": $("#crime").val(),
                     "location": $("#location").val(),
                     "assignedTo": $("#assignedTo").val(),
                 },
@@ -171,6 +177,7 @@ function displayAllCases(){
                 "data": {
                     "victim": null,
                     "suspect": null,
+                    "crime": null,
                     "location": null,
                     "assignedTo": null,
                 },

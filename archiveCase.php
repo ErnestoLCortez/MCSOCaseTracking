@@ -1,5 +1,5 @@
 <?php
-echo '<button onclick="history.go(-1);">Back </button>';
+echo "<a href='main.php'>Home</a>";
 include 'dbConn.php';
 $connection = dbConn();
 $hasUpdate = false;

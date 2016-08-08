@@ -42,7 +42,7 @@ if (isset($_GET['updateUser'])) {
           lastname = :lastname,
           active = :active,
           password = :password
-          WHERE userID = :userID";
+          WHERE username = :username";
     
     $namedParameters = array();
     $namedParameters[':rank'] = $_GET['rank'];
@@ -50,7 +50,7 @@ if (isset($_GET['updateUser'])) {
     $namedParameters[':lastname'] = $_GET['lastname'];
     $namedParameters[':active'] = $_GET['active'];
     $namedParameters[':password'] = hash("sha1",$_GET['password']);
-    $namedParameters[':userID'] = $_GET['userID'];
+    $namedParameters[':username'] = $_GET['username'];
     }
     
 }

@@ -14,9 +14,9 @@ $hasUpdate = false;
 
 function getUserByID(){
   $conn = dbConn();
-  $sql = "SELECT * FROM `users` WHERE userID = :userID";
+  $sql = "SELECT * FROM `users` WHERE username = :username";
   $namedParameters = array();
-  $namedParameters[':userID'] = $_GET['userID'];
+  $namedParameters[':username'] = $_GET['username'];
   $statement = $conn->prepare($sql);    
   $statement->execute($namedParameters);
   $record = $statement->fetch();
@@ -34,7 +34,7 @@ if (isset($_GET['updateUser'])) {
           lastname = :lastname,
           active = :active,
           password = :password
-          WHERE userID = :userID";
+          WHERE username = :username";
     
     $namedParameters = array();
     $namedParameters[':rank'] = $_GET['rank'];
@@ -42,7 +42,7 @@ if (isset($_GET['updateUser'])) {
     $namedParameters[':lastname'] = $_GET['lastname'];
     $namedParameters[':active'] = $_GET['active'];
     $namedParameters[':password'] = hash("sha1",$_GET['password']);
-    $namedParameters[':userID'] = $_GET['userID'];
+    $namedParameters[':username'] = $_GET['username'];
     }else if(strcmp($_GET['password'],"")==0){
         /*
         *   The password field is unset. Ignore the field.
@@ -52,14 +52,14 @@ if (isset($_GET['updateUser'])) {
           firstname = :firstname,
           lastname = :lastname,
           active = :active
-          WHERE userID = :userID";
+          WHERE username = :username";
     
     $namedParameters = array();
     $namedParameters[':rank'] = $_GET['rank'];
     $namedParameters[':firstname'] = $_GET['firstname'];
     $namedParameters[':lastname'] = $_GET['lastname'];
     $namedParameters[':active'] = $_GET['active'];
-    $namedParameters[':userID'] = $_GET['userID'];
+    $namedParameters[':username'] = $_GET['username'];
     }
     
   $conn = dbConn();    
@@ -142,7 +142,7 @@ if (isset($_GET['updateUser'])) {
                 <td><input type="password" name="password"/></td>
             </tr>
         </table>
-        <input type="hidden" name="userID" value="<?php echo $user['userID']?>" />
+        <input type="hidden" name="username" value="<?php echo $user['username']?>" />
         <input type="submit" value="Update User" name="updateUser" />
     </form>
     

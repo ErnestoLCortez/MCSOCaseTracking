@@ -36,7 +36,6 @@ if (isset($_POST['loginForm'])) { //checks whether user submitted the form
         $_SESSION['lastname'] = $record['lastname']; 
         $_SESSION['firstname'] = $record['firstname']; 
         $_SESSION['rank'] = $record['rank'];
-        $_SESSION['userID'] = $record['userID'];
         header("Location: main.php");
     } 
      

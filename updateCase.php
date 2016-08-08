@@ -6,9 +6,9 @@ $hasUpdate = false;
 
 function getCaseByID(){
   $conn = dbConn();
-  $sql = "SELECT * FROM `case` WHERE caseID = :caseID";
+  $sql = "SELECT * FROM `case` WHERE caseNumber = :caseNumber";
   $namedParameters = array();
-  $namedParameters[':caseID'] = $_GET['caseID'];
+  $namedParameters[':caseNumber'] = $_GET['caseNumber'];
   $statement = $conn->prepare($sql);    
   $statement->execute($namedParameters);
   $record = $statement->fetch();
@@ -39,7 +39,7 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
           property = :property,
           evidence = :evidence,
           summary = :summary
-          WHERE caseID = :caseID";
+          WHERE caseNumber = :caseNumber";
     
     $namedParameters = array();
     $namedParameters[':reportDate'] = $_GET['reportDate'];
@@ -62,7 +62,7 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
     $namedParameters[':property'] = $_GET['property'];
     $namedParameters[':evidence'] = $_GET['evidence'];
     $namedParameters[':summary'] = $_GET['summary'];
-    $namedParameters[':caseID'] = $_GET['caseID'];
+    $namedParameters[':caseNumber'] = $_GET['caseNumber'];
     
     
   $conn = dbConn();    
@@ -132,8 +132,8 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
                         $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
                         $deputies = getDataBySQL($deputySQL);
                         foreach($deputies as $deputy){
-                          echo '<option value="' . $deputy['userID'] . '"';
-                          if($deputy['userID'] == $case['reportingDeputy']){
+                          echo '<option value="' . $deputy['username'] . '"';
+                          if($deputy['username'] == $case['reportingDeputy']){
                             echo " selected ";
                           }
                           echo ' >' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
@@ -173,8 +173,8 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
                         $deputySQL = "SELECT * FROM `users` WHERE `active` = 1 ORDER BY lastname ASC";
                         $deputies = getDataBySQL($deputySQL);
                         foreach($deputies as $deputy){
-                          echo '<option value="' . $deputy['userID'] . '"';
-                          if($deputy['userID'] == $case['assignedTo']){
+                          echo '<option value="' . $deputy['username'] . '"';
+                          if($deputy['username'] == $case['assignedTo']){
                             echo " selected ";
                           }
                           echo ' >' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
@@ -201,8 +201,8 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
                         $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
                         $deputies = getDataBySQL($deputySQL);
                         foreach($deputies as $deputy){
-                          echo '<option value="' . $deputy['userID'] . '"';
-                          if($deputy['userID'] == $case['assignedBy']){
+                          echo '<option value="' . $deputy['username'] . '"';
+                          if($deputy['username'] == $case['assignedBy']){
                             echo " selected ";
                           }
                           echo ' >' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
@@ -245,7 +245,7 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
               <td colspan=2><textarea name="summary" rows="10" cols="75"><?php echo $case['summary'];?></textarea></td>
             </tr>
             </table>
-            <input type="hidden" name="caseID" value="<?php echo $case['caseID']?>" />
+            <input type="hidden" name="caseNumber" value="<?php echo $case['caseNumber']?>" />
           <input type="submit" value="Update Case" name="updateCase" />
           
       </form>

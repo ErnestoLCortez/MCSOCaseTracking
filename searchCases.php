@@ -37,7 +37,7 @@ function displayAllCases(){
           
           //Display the detective assigned to the case
           echo "<td>";
-            $adSQL = "Select * FROM `users` a WHERE a.userID = " . $record['assignedTo'];
+            $adSQL = "Select * FROM `users` a WHERE a.username = '" . $record['assignedTo'] ."'";
             $ad = getDataBySQL($adSQL);
             foreach($ad as $ad1){
                 echo $ad1['rank'] . " " . $ad1['lastname'];
@@ -46,7 +46,7 @@ function displayAllCases(){
           echo "<td>" . $record['complaintAction'] . "</td>";
           
           //Comments table. Find comments associated with the primary key on the case number.
-              $com = "Select * FROM `comments` a WHERE a.caseID = " . $record['caseID'] . " ORDER BY commentDate DESC";
+              $com = "Select * FROM `comments` a WHERE a.caseNumber = '" . $record['caseNumber'] . "' ORDER BY commentDate DESC";
               $comments = getDataBySQL($com);
               $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
               $deputies = getDataBySQL($deputySQL);
@@ -61,7 +61,7 @@ function displayAllCases(){
               }
               echo "<tr>";
               foreach($deputies as $deputy){
-                if($deputy['userID'] == $comment['userID']){
+                if($deputy['username'] == $comment['username']){
                   echo "<td>" . $deputy['rank'] . " " . $deputy['lastname'] . "</td>";
                   $atFive += 1;
                 }
@@ -75,12 +75,12 @@ function displayAllCases(){
           echo "</td></tr>";
           //UPDATE CASE BUTTON
           echo "<td> <form action=updateCase.php>";
-          echo "<input type='hidden' name='caseID' value='".$record['caseID'] . "'/>";
+          echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
           echo "<input type='submit' value='View Case'/></form> </td>";
           
           //COMMENT ON CASE BUTTON
           echo "<td> <form action=commentCase.php>";
-          echo "<input type='hidden' name='caseID' value='".$record['caseID'] . "'/>";
+          echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
           echo "<input type='submit' value='Comment On Case'/></form> </td>";
         } //endForeach
         
@@ -137,7 +137,7 @@ function displayAllCases(){
                         $deputies = getDataBySQL($deputySQL);
                         echo '<option selected disabled hidden value=""></option>';
                         foreach($deputies as $deputy){
-                          echo '<option value="' . $deputy['userID'] . '">' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
+                          echo '<option value="' . $deputy['username'] . '">' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
                         }
                        ?>
                     </select>

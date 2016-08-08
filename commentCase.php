@@ -14,12 +14,12 @@ if (isset($_GET['commentCase'])) {  //admin submitted form to add product
     
   
   
-  $sql = "INSERT INTO comments ( caseID, userID, comment) 
-          VALUES ( :caseID, :userID, :comment)";
+  $sql = "INSERT INTO comments ( caseNumber, username, comment) 
+          VALUES ( :caseNumber, :username, :comment)";
           
     $namedParameters = array();
-    $namedParameters[':caseID'] = $_GET['caseID'];
-    $namedParameters[':userID'] = $_GET['userID'];
+    $namedParameters[':caseNumber'] = $_GET['caseNumber'];
+    $namedParameters[':username'] = $_GET['username'];
     $namedParameters[':comment'] = $_GET['comment'];
 
   $conn = dbConn();    
@@ -47,7 +47,7 @@ if (isset($_GET['commentCase'])) {  //admin submitted form to add product
       <h4>Comment History</h4>
       <?php
         $connection = dbConn();
-        $com = "Select * FROM `comments` WHERE caseID = " . $_GET['caseID'] . " ORDER BY commentDate ASC";
+        $com = "Select * FROM `comments` WHERE caseNumber = '" . $_GET['caseNumber'] . "' ORDER BY commentDate ASC";
         $comments = getDataBySQL($com);
         $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
         $deputies = getDataBySQL($deputySQL);
@@ -59,7 +59,7 @@ if (isset($_GET['commentCase'])) {  //admin submitted form to add product
           echo "<tr>";
               
               foreach($deputies as $deputy){
-                if($deputy['userID'] == $comment['userID']){
+                if($deputy['username'] == $comment['username']){
                   echo "<td>" . $deputy['rank'] . " " . $deputy['lastname'] . "</td>";
                 }
               }
@@ -73,8 +73,8 @@ if (isset($_GET['commentCase'])) {  //admin submitted form to add product
       <br><br><b>Comment:</b>
       <form>
           <textarea rows="4" cols="75" name="comment" /></textarea> <br />
-          <input type="hidden" name="caseID" value="<?=$_GET['caseID']?>" />
-          <input type="hidden" name="userID" value="<?=$_SESSION['userID']?>" />
+          <input type="hidden" name="caseNumber" value="<?=$_GET['caseNumber']?>" />
+          <input type="hidden" name="username" value="<?=$_SESSION['username']?>" />
           <input type="submit" value="Comment On Case" name="commentCase" />
       </form>
     </div>

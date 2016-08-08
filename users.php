@@ -38,7 +38,7 @@ function displayAllUsers(){
         
         //Alter User
         echo "<td> <form action=editUser.php>";
-        echo "<input type='hidden' name='userID' value='".$user['userID'] . "'/>";
+        echo "<input type='hidden' name='username' value='".$user['username'] . "'/>";
         echo "<input type='submit' value='Edit User'/></form> </td>";
         echo "</tr>";
     }

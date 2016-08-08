@@ -11,7 +11,7 @@ if (!isset($_SESSION['username'])) {  //checks whether user has logged in
 
 echo "<a href='main.php'>Home</a>";
 if (isset($_GET['addCase'])) {  //admin submitted form to add product
-    
+try{
   $conn = dbConn();
   //Check authentication Here
   
@@ -46,8 +46,14 @@ if (isset($_GET['addCase'])) {  //admin submitted form to add product
   
   echo "Case has been added.";   
   header("Location: main.php");
+}catch (Exception $e){
+  $hasError = true;
+  echo "<h2><font color=red>Caught exception. Check your form. Duplicate Case Number?</font></h2>";
+  function displayError(){
+    echo '<p>Error Code for the squints: ', $e->getMessage(),"\n";
+  }
 }
-
+}
 
 
 ?>
@@ -120,7 +126,7 @@ if (isset($_GET['addCase'])) {  //admin submitted form to add product
                         $deputySQL = "SELECT * FROM `users` WHERE `active` = 1 ORDER BY lastname ASC";
                         $deputies = getDataBySQL($deputySQL);
                         foreach($deputies as $deputy){
-                          echo '<option value="' . $deputy['userID'] . '">' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
+                          echo '<option value="' . $deputy['username'] . '">' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
                         }
                        ?>
                     </select></td>
@@ -153,7 +159,7 @@ if (isset($_GET['addCase'])) {  //admin submitted form to add product
                         $deputySQL = "SELECT * FROM `users` WHERE `active` = 1 ORDER BY lastname ASC";
                         $deputies = getDataBySQL($deputySQL);
                         foreach($deputies as $deputy){
-                          echo '<option value="' . $deputy['userID'] . '">' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
+                          echo '<option value="' . $deputy['username'] . '">' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
                         }
                        ?>
                     </select></td>
@@ -172,7 +178,7 @@ if (isset($_GET['addCase'])) {  //admin submitted form to add product
                 </tr>
                 <tr>
                   <td>Assigned By</td>
-                  <td><?=$_SESSION['rank']?> <?=$_SESSION['lastname']?><input type="hidden" name="assignedBy" value="<?=$_SESSION['userID']?>"/></td>
+                  <td><?=$_SESSION['rank']?> <?=$_SESSION['lastname']?><input type="hidden" name="assignedBy" value="<?=$_SESSION['username']?>"/></td>
                 </tr>
                 <tr>
                   <td>Follow Up Date:</td>
@@ -215,7 +221,12 @@ if (isset($_GET['addCase'])) {  //admin submitted form to add product
       </form>
       
     </div>
-
+    <div>
+      <?php if($hasError){
+        displayError();
+      }
+      ?>
+    </div>
     <footer>
     </footer>
   </div>

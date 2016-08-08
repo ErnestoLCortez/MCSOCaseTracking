@@ -18,7 +18,7 @@ function displayMyCases(){
     if($_SESSION['rank'] == "Admin" || $_SESSION['rank'] == "Commander"){
       $sql = "Select * FROM `case` WHERE `active` = 1 ORDER BY entryDate DESC";
     }else{
-      $sql = "Select * FROM `case` a WHERE a.assignedTo = " . $_SESSION['userID'] . " ORDER BY entryDate DESC";
+      $sql = "Select * FROM `case` a WHERE a.assignedTo = '" . $_SESSION['username'] . "' ORDER BY entryDate DESC";
     }
     
     $records = getDataBySQL($sql);
@@ -41,7 +41,7 @@ function displayMyCases(){
           echo "<td>" . $record['crime'] . "</td>";
           echo "<td>" . $record['followUpDate'] . "</td>";
           echo "<td>" . $record['complaintAction'] . "</td>";
-              $com = "Select * FROM `comments` a WHERE a.caseID = " . $record['caseID'] . " ORDER BY commentDate DESC";
+              $com = "Select * FROM `comments` a WHERE a.caseNumber = '" . $record['caseNumber'] . "' ORDER BY commentDate DESC";
               $comments = getDataBySQL($com);
               $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
               $deputies = getDataBySQL($deputySQL);
@@ -56,7 +56,7 @@ function displayMyCases(){
               }
               echo "<tr>";
               foreach($deputies as $deputy){
-                if($deputy['userID'] == $comment['userID']){
+                if($deputy['username'] == $comment['username']){
                   echo "<td>" . $deputy['rank'] . " " . $deputy['lastname'] . "</td>";
                   $atFive += 1;
                 }
@@ -70,17 +70,17 @@ function displayMyCases(){
           echo "</td></tr>";
           //UPDATE CASE BUTTON
           echo "<td> <form action=updateCase.php>";
-          echo "<input type='hidden' name='caseID' value='".$record['caseID'] . "'/>";
+          echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
           echo "<input type='submit' value='View Case'/></form> </td>";
           
           //COMMENT ON CASE BUTTON
           echo "<td> <form action=commentCase.php>";
-          echo "<input type='hidden' name='caseID' value='".$record['caseID'] . "'/>";
+          echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
           echo "<input type='submit' value='Comment On Case'/></form> </td>";
           
           //DELETE CASE BUTTON
           echo "<td> <form action=archiveCase.php>";
-          echo "<input type='hidden' name='caseID' value='".$record['caseID'] . "'/>";
+          echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
           echo "<input type='submit' value='Finalize/Archive Case'/></form> </td>";
           echo "</tr>";
           echo "</tr>";

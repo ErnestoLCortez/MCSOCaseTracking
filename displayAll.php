@@ -5,11 +5,11 @@ include "dbConn.php";
 $connection = dbConn(); 
 
 
-$sql = "Select * FROM `case` WHERE 1 = 1";
+$sql = "Select * FROM `case`";
 if($_SESSION['rank'] == "Admin" || $_SESSION['rank'] == "Commander"){
-      $sql .= " ORDER BY entryDate DESC";
+      $sql .= " WHERE 1 = 1";
 }else{
-      $sql = "Select * FROM `case` a WHERE a.active = 0";
+      $sql = " a WHERE a.active = 0";
 }
 // $sql = "SELECT * FROM `case` WHERE 1 = 1";
 
@@ -42,7 +42,6 @@ if(!empty($_GET) && isset($_GET))
 
 
 $sql .= " ORDER BY entryDate DESC";
-echo $sql;
 $records = getDataBySQL($sql);
 
 
@@ -61,7 +60,7 @@ foreach ($records as $record) {
   echo "<td>" . $record['crime'] . "</td>";
   //Display the detective assigned to the case
   echo "<td>";
-    $adSQL = "Select * FROM `users` a WHERE a.userID = " . $record['assignedTo'];
+    $adSQL = "Select * FROM `users` a WHERE a.username = '" . $record['assignedTo'] . "'";
     $ad = getDataBySQL($adSQL);
     foreach($ad as $ad1){
         echo $ad1['rank'] . " " . $ad1['lastname'];
@@ -69,7 +68,7 @@ foreach ($records as $record) {
   echo "</td>";
           
   echo "<td>" . $record['complaintAction'] . "</td>";
-      $com = "Select * FROM `comments` a WHERE a.caseID = " . $record['caseID'] . " ORDER BY commentDate DESC";
+      $com = "Select * FROM `comments` a WHERE a.casenumber = '" . $record['casenumber'] . "' ORDER BY commentDate DESC";
       $comments = getDataBySQL($com);
   echo "<td><table border=1>";
     foreach($comments as $comment){
@@ -82,12 +81,12 @@ foreach ($records as $record) {
   echo "</td></tr>";
   //UPDATE CASE BUTTON
   echo "<td> <form action=updateCase.php>";
-  echo "<input type='hidden' name='caseID' value='".$record['caseID'] . "'/>";
+  echo "<input type='hidden' name='casenumber' value='".$record['casenumber'] . "'/>";
   echo "<input type='submit' value='View Case'/></form> </td>";
   
   //COMMENT ON CASE BUTTON
   echo "<td> <form action=commentCase.php>";
-  echo "<input type='hidden' name='caseID' value='".$record['caseID'] . "'/>";
+  echo "<input type='hidden' name='casenumber' value='".$record['casenumber'] . "'/>";
   echo "<input type='submit' value='Comment On Case'/></form> </td>";
   
 } //endForeach

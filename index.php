@@ -13,21 +13,26 @@
 </head>
 
 <body>
+  <center>
   <div>
     <header>
       <h1>MCSO Case Login</h1>
     </header>
+    <div id=img>
+      <img src="..\img\login-logo.png">
+    </div>
     <div>
+      
         <form method="post" action="loginProcess.php">
             
-            Username: (admin) <input type="text" name="username" /> <br />
-            Password: (password) <input type="password" name="password" /> <br />
+            Username <input type="text" name="username" /> <br />
+            Password &nbsp<input type="password" name="password" /> <br />
             <input type="submit" value="Login" name="loginForm" />
             
         </form>
       
     </div>
-
+  </center>
     <footer>
     </footer>
     

@@ -35,9 +35,11 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
           assignedBy = :assignedBy,
           followUpDate = :followUpDate,
           complaintAction = :complaintAction,
-          selfInit = :selfInit,
           property = :property,
           evidence = :evidence,
+          cash = :cash,
+          narcotics = :narcotics,
+          weapons = :weapons,
           summary = :summary
           WHERE caseNumber = :caseNumber";
     
@@ -58,9 +60,11 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
     $namedParameters[':assignedBy'] = $_GET['assignedBy'];
     $namedParameters[':followUpDate'] = $_GET['followUpDate'];
     $namedParameters[':complaintAction'] = $_GET['complaintAction'];
-    $namedParameters[':selfInit'] = $_GET['selfInit'];
     $namedParameters[':property'] = $_GET['property'];
     $namedParameters[':evidence'] = $_GET['evidence'];
+    $namedParameters[':cash'] = $_GET['cash'];
+    $namedParameters[':narcotics'] = $_GET['narcotics'];
+    $namedParameters[':weapons'] = $_GET['weapons'];
     $namedParameters[':summary'] = $_GET['summary'];
     $namedParameters[':caseNumber'] = $_GET['caseNumber'];
     
@@ -91,6 +95,8 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
     <div>
         
         <?php $case = getCaseByID()?>
+        
+        <!--rank check-->
         
         <form>
         <table border=1>
@@ -224,10 +230,6 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
                     </select></td>
                 </tr>
                 <tr>
-                  <td>Self Init:</td>
-                  <td><input type="checkbox" name="selfInit" value="1" <?php if($case['selfInit'] == "1"){echo "checked";}?>></td>
-                </tr>
-                <tr>
                   <td>Property:</td>
                   <td><input type="checkbox" name="property" value="1" <?php if($case['property'] == "1"){echo "checked";}?>></td>
                 </tr>
@@ -236,6 +238,23 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
                   <td><input type="checkbox" name="evidence" value="1" <?php if($case['evidence'] == "1"){echo "checked";}?>></td>
                 </tr>
                 </table>
+                <center>
+                <br>Seizures<br>
+                <table border=1>
+              <tr>
+                <td>Cash:</td>
+                <td><input type="checkbox" name="cash" value="1" <?php if($case['cash'] == "1"){echo "checked";}?>></td>
+              </tr>
+              <tr>
+                <td>Narcotics:</td>
+                <td><input type="checkbox" name="narcotics" value="1" <?php if($case['narcotics'] == "1"){echo "checked";}?>></td>
+              </tr>
+              <tr>
+                <td>Weapons:</td>
+                <td><input type="checkbox" name="weapons" value="1" <?php if($case['weapons'] == "1"){echo "checked";}?>></td>
+              </tr>
+            </table>
+            </center>
             </th>
             </tr>
             <tr>

@@ -99,7 +99,7 @@ if (isset($_GET['updateUser'])) {
             <td><select name="rank">
                 <option value="Commander" <?php if($user['rank'] == "Commander"){echo "selected";}?>>Commander</option>
                 <option value="Admin" <?php if($user['rank'] == "Admin"){echo "selected";}?>>Admin</option>
-                <option value="Sargeant" <?php if($user['rank'] == "Sargeant"){echo "selected";}?>>Sargeant</option>
+                <option value="Sergeant" <?php if($user['rank'] == "Sergeant"){echo "selected";}?>>Sergeant</option>
                 <option value="Deputy" <?php if($user['rank'] == "Deputy"){echo "selected";}?>>Deputy</option>
             </select></td>
         </tr>

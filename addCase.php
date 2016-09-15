@@ -11,46 +11,52 @@ if (!isset($_SESSION['username'])) {  //checks whether user has logged in
 
 echo "<a href='main.php'>Home</a>";
 if (isset($_GET['addCase'])) {  //admin submitted form to add product
-try{
-  $conn = dbConn();
-  //Check authentication Here
-  
-  $sql = "INSERT INTO `case` ( reportDate, caseNumber, crime, location, reportingParty, victim, suspect, reportingDeputy, flaggedCase, agCrime, status, assignedTo, unit, assignedBy, followUpDate, complaintAction, selfInit, property, evidence, summary)
-    VALUES ( :reportDate, :caseNumber, :crime, :location, :reportingParty, :victim, :suspect, :reportingDeputy, :flaggedCase, :agCrime, :status, :assignedTo, :unit, :assignedBy, :followUpDate, :complaintAction, :selfInit, :property, :evidence, :summary)";
+if(strcmp($_GET['caseNumber'],"")==0){
+  echo "<h2><font color=red>Case Number cannot be blank.</font></h2>";
+}else{
+  try{
+    $conn = dbConn();
+    //Check authentication Here
     
-    $namedParameters = array();
-    $namedParameters[':reportDate'] = $_GET['reportDate'];
-    $namedParameters[':caseNumber'] = $_GET['caseNumber'];
-    $namedParameters[':crime'] = $_GET['crime'];
-    $namedParameters[':location'] = $_GET['location'];
-    $namedParameters[':reportingParty'] = $_GET['reportingParty'];
-    $namedParameters[':victim'] = $_GET['victim'];
-    $namedParameters[':suspect'] = $_GET['suspect'];
-    $namedParameters[':reportingDeputy'] = $_GET['reportingDeputy'];
-    $namedParameters[':flaggedCase'] = $_GET['flaggedCase'];
-    $namedParameters[':agCrime'] = $_GET['agCrime'];
-    $namedParameters[':status'] = $_GET['status'];
-    $namedParameters[':assignedTo'] = $_GET['assignedTo'];
-    $namedParameters[':unit'] = $_GET['unit'];
-    $namedParameters[':assignedBy'] = $_GET['assignedBy'];
-    $namedParameters[':followUpDate'] = $_GET['followUpDate'];
-    $namedParameters[':complaintAction'] = $_GET['complaintAction'];
-    $namedParameters[':selfInit'] = $_GET['selfInit'];
-    $namedParameters[':property'] = $_GET['property'];
-    $namedParameters[':evidence'] = $_GET['evidence'];
-    $namedParameters[':summary'] = $_GET['summary'];
+    $sql = "INSERT INTO `case` ( reportDate, caseNumber, crime, location, reportingParty, victim, suspect, reportingDeputy, flaggedCase, agCrime, status, assignedTo, unit, assignedBy, followUpDate, complaintAction, property, evidence, summary)
+      VALUES ( :reportDate, :caseNumber, :crime, :location, :reportingParty, :victim, :suspect, :reportingDeputy, :flaggedCase, :agCrime, :status, :assignedTo, :unit, :assignedBy, :followUpDate, :complaintAction, :property, :evidence, :summary)";
+      
+      $namedParameters = array();
+      $namedParameters[':reportDate'] = $_GET['reportDate'];
+      $namedParameters[':caseNumber'] = $_GET['caseNumber'];
+      $namedParameters[':crime'] = $_GET['crime'];
+      $namedParameters[':location'] = $_GET['location'];
+      $namedParameters[':reportingParty'] = $_GET['reportingParty'];
+      $namedParameters[':victim'] = $_GET['victim'];
+      $namedParameters[':suspect'] = $_GET['suspect'];
+      $namedParameters[':reportingDeputy'] = $_GET['reportingDeputy'];
+      $namedParameters[':flaggedCase'] = $_GET['flaggedCase'];
+      $namedParameters[':agCrime'] = $_GET['agCrime'];
+      $namedParameters[':status'] = $_GET['status'];
+      $namedParameters[':assignedTo'] = $_GET['assignedTo'];
+      $namedParameters[':unit'] = $_GET['unit'];
+      $namedParameters[':assignedBy'] = $_GET['assignedBy'];
+      $namedParameters[':followUpDate'] = $_GET['followUpDate'];
+      $namedParameters[':complaintAction'] = $_GET['complaintAction'];
+      $namedParameters[':property'] = $_GET['property'];
+      $namedParameters[':evidence'] = $_GET['evidence'];
+      $namedParameters[':cash'] = $_GET['cash'];
+      $namedParameters[':narcotics'] = $_GET['narcotics'];
+      $namedParameters[':weapons'] = $_GET['weapons'];
+      $namedParameters[':summary'] = $_GET['summary'];
+      
+      
+      $statement = $conn->prepare($sql);
+      $statement->execute($namedParameters);  
     
-    
-    $statement = $conn->prepare($sql);
-    $statement->execute($namedParameters);  
-  
-  echo "Case has been added.";   
-  header("Location: main.php");
-}catch (Exception $e){
-  $hasError = true;
-  echo "<h2><font color=red>Caught exception. Check your form. Duplicate Case Number?</font></h2>";
-  function displayError(){
-    echo '<p>Error Code for the squints: ', $e->getMessage(),"\n";
+    echo "Case has been added.";   
+    header("Location: main.php");
+  }catch (Exception $e){
+    $hasError = true;
+    echo "<h2><font color=red>Caught exception. Check your form. Duplicate Case Number?</font></h2>";
+    function displayError(){
+      echo '<p>Error Code for the squints: ', $e->getMessage(),"\n";
+    }
   }
 }
 }
@@ -194,10 +200,6 @@ try{
                     </select></td>
                 </tr>
                 <tr>
-                  <td>Self Init:</td>
-                  <td><input type="checkbox" name="selfInit" value="1"></td>
-                </tr>
-                <tr>
                   <td>Property:</td>
                   <td><input type="checkbox" name="property" value="1"></td>
                 </tr>
@@ -206,6 +208,23 @@ try{
                   <td><input type="checkbox" name="evidence" value="1"></td>
                 </tr>
                 </table>
+                <center>
+                <br>Seizures<br>
+                <table border=1>
+              <tr>
+                <td>Cash:</td>
+                <td><input type="checkbox" name="cash" value="1" ></td>
+              </tr>
+              <tr>
+                <td>Narcotics:</td>
+                <td><input type="checkbox" name="narcotics" value="1"></td>
+              </tr>
+              <tr>
+                <td>Weapons:</td>
+                <td><input type="checkbox" name="weapons" value="1" ></td>
+              </tr>
+            </table>
+            </center>
             </th>
             </tr>
             <tr>

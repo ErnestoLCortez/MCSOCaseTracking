@@ -9,7 +9,7 @@ $sql = "Select * FROM `case`";
 if($_SESSION['rank'] == "Admin" || $_SESSION['rank'] == "Commander"){
       $sql .= " WHERE 1 = 1";
 }else{
-      $sql = " a WHERE a.active = 0";
+      $sql .= " a WHERE a.active = 0";
 }
 // $sql = "SELECT * FROM `case` WHERE 1 = 1";
 

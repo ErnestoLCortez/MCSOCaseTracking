@@ -1,4 +1,101 @@
 <!DOCTYPE html>
+<?php
+session_start();
+
+if (!isset($_SESSION['username'])) {  //checks whether user has logged in
+    
+    header("Location: index.php");
+    
+}
+
+include 'dbConn.php';
+
+$connection = dbConn();
+
+function displayMyCases(){
+  /*
+  * SQL queries to retrieve pertinent cases
+  */
+    if($_SESSION['rank'] == "Admin" || $_SESSION['rank'] == "Commander"){
+      $sql = "Select * FROM `case` WHERE `active` = 1 ORDER BY entryDate DESC";
+    }else{
+      $sql = "Select * FROM `case` a WHERE a.assignedTo = '" . $_SESSION['username'] . "' ORDER BY entryDate DESC";
+    }
+    
+    $records = getDataBySQL($sql);
+    
+    // $commentSQL = "Select * FROM comments ";
+    // $comments = getDataBySQL($commentSQL);
+
+     //Using Form Buttons
+         echo "<table width='100%' class='table table-striped table-bordered table-hover' id='dataTables-example'>";
+         echo "<thead></tr>"; //Start headers
+         echo "<th>Case Number</th>";		
+         echo "<th>Victim</th>";		
+         echo "<th>Crime</th>";		
+         echo "<th>Follow Up Date</th>";		
+         echo "<th>Complaint Action</th>";
+         echo "<th>Comments</th>";
+         echo "</tr></thead>";  //End headers
+         echo "<tbody>"; //Start table body
+        foreach ($records as $record) {
+          echo "<tr>"; 
+          echo "<td>" . $record['caseNumber'] . "</td>"; 
+          echo "<td>" . $record['victim'] . "</td>";
+          echo "<td>" . $record['crime'] . "</td>";
+          echo "<td>" . $record['followUpDate'] . "</td>";
+          echo "<td>" . $record['complaintAction'] . "</td>";
+              $com = "Select * FROM `comments` a WHERE a.caseNumber = '" . $record['caseNumber'] . "' ORDER BY commentDate DESC";
+              $comments = getDataBySQL($com);
+              $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
+              $deputies = getDataBySQL($deputySQL);
+          echo "<td><table border=1>"; //Limit the size of the comments table
+          echo '<col width="150">';
+          echo '<col width="150">';
+          echo '<col width="500">';
+          $atFive = 0;
+            foreach($comments as $comment){
+              if($atFive == 5){
+                break;
+              }
+              echo "<tr>";
+              foreach($deputies as $deputy){
+                if($deputy['username'] == $comment['username']){
+                  echo "<td>" . $deputy['rank'] . " " . $deputy['lastname'] . "</td>";
+                  $atFive += 1;
+                }
+                
+              }
+              echo "<td>" . $comment['commentDate'] . "</td>";
+              echo "<td>" . $comment['comment'] . "</td>";
+              echo "</tr>";
+            }
+            echo "</tbody>"; //End table body
+          echo "</table>";
+          echo "</td></tr>";
+          //UPDATE CASE BUTTON
+          echo "<td> <form action=updateCase.php>";
+          echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
+          echo "<input type='submit' value='View Case'/></form> </td>";
+          
+          //COMMENT ON CASE BUTTON
+          echo "<td> <form action=commentCase.php>";
+          echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
+          echo "<input type='submit' value='Comment On Case'/></form> </td>";
+          
+          //DELETE CASE BUTTON
+          echo "<td> <form action=archiveCase.php>";
+          echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
+          echo "<input type='submit' value='Finalize/Archive Case'/></form> </td>";
+          echo "</tr>";
+          echo "</tr>";
+        } //endForeach
+        echo "</table>";
+}
+
+?>
+
+
 <html lang="en">
 
 <head>
@@ -88,91 +185,25 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="home.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                            <a href="addCases.php"><i class="fa fa-edit fa-fw"></i> New Case</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Analytics & Reports<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="flot.html">Flot Charts</a>
+                                    <a href="/pages/flot.html">In-Progress</a>
                                 </li>
                                 <li>
-                                    <a href="morris.html">Morris.js Charts</a>
+                                    <a href="/pages/morris.html">In-Progress</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-                        </li>
-                        <li>
-                            <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="panels-wells.html">Panels and Wells</a>
-                                </li>
-                                <li>
-                                    <a href="buttons.html">Buttons</a>
-                                </li>
-                                <li>
-                                    <a href="notifications.html">Notifications</a>
-                                </li>
-                                <li>
-                                    <a href="typography.html">Typography</a>
-                                </li>
-                                <li>
-                                    <a href="icons.html"> Icons</a>
-                                </li>
-                                <li>
-                                    <a href="grid.html">Grid</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                    </ul>
-                                    <!-- /.nav-third-level -->
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="blank.html">Blank Page</a>
-                                </li>
-                                <li>
-                                    <a href="login.html">Login Page</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
+                            <a href="searchCase.php"><i class="fa fa-search fa-fw"></i> Advanced Search</a>
                         </li>
                     </ul>
                 </div>
@@ -181,10 +212,16 @@
             <!-- /.navbar-static-side -->
         </nav>
 
+
+
+
+
+
+
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Tables</h1>
+                    <h1 class="page-header">Dashboard</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -193,60 +230,15 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            DataTables Advanced Tables
+                            <h3>Cases at a Glance</h3>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
-                                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>Rendering engine</th>
-                                            <th>Browser</th>
-                                            <th>Platform(s)</th>
-                                            <th>Engine version</th>
-                                            <th>CSS grade</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td>Trident</td>
-                                            <td>Internet Explorer 4.0</td>
-                                            <td>Win 95+</td>
-                                            <td class="center">4</td>
-                                            <td class="center">X</td>
-                                        </tr>
-                                        <tr class="even gradeC">
-                                            <td>Trident</td>
-                                            <td>Internet Explorer 5.0</td>
-                                            <td>Win 95+</td>
-                                            <td class="center">5</td>
-                                            <td class="center">C</td>
-                                        </tr>
-                                        <tr class="odd gradeA">
-                                            <td>Trident</td>
-                                            <td>Internet Explorer 5.5</td>
-                                            <td>Win 95+</td>
-                                            <td class="center">5.5</td>
-                                            <td class="center">A</td>
-                                        </tr>
-                                        <tr class="even gradeA">
-                                            <td>Trident</td>
-                                            <td>Internet Explorer 6</td>
-                                            <td>Win 98+</td>
-                                            <td class="center">6</td>
-                                            <td class="center">A</td>
-                                        </tr>
-                                        
-                                    </tbody>
-                                </table>
+                                <?=displayMyCases()?>
                             </div>
                             <!-- /.table-responsive -->
-                            <div class="well">
-                                <h4>DataTables Usage Information</h4>
-                                <p>DataTables is a very flexible, advanced tables plugin for jQuery. In SB Admin, we are using a specialized version of DataTables built for Bootstrap 3. We have also customized the table headings to use Font Awesome icons in place of images. For complete documentation on DataTables, visit their website at <a target="_blank" href="https://datatables.net/">https://datatables.net/</a>.</p>
-                                <a class="btn btn-default btn-lg btn-block" target="_blank" href="https://datatables.net/">View DataTables Documentation</a>
-                            </div>
+                            
                         </div>
                         <!-- /.panel-body -->
                     </div>

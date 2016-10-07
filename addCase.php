@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 //Check the session and connect to the database
 session_start();
@@ -9,7 +10,7 @@ if (!isset($_SESSION['username'])) {  //checks whether user has logged in
     
 }
 
-echo "<a href='main.php'>Home</a>";
+
 if (isset($_GET['addCase'])) {  //admin submitted form to add product
 if(strcmp($_GET['caseNumber'],"")==0){
   echo "<h2><font color=red>Case Number cannot be blank.</font></h2>";
@@ -18,8 +19,8 @@ if(strcmp($_GET['caseNumber'],"")==0){
     $conn = dbConn();
     //Check authentication Here
     
-    $sql = "INSERT INTO `case` ( reportDate, caseNumber, crime, location, reportingParty, victim, suspect, reportingDeputy, flaggedCase, agCrime, status, assignedTo, unit, assignedBy, followUpDate, complaintAction, property, evidence, summary)
-      VALUES ( :reportDate, :caseNumber, :crime, :location, :reportingParty, :victim, :suspect, :reportingDeputy, :flaggedCase, :agCrime, :status, :assignedTo, :unit, :assignedBy, :followUpDate, :complaintAction, :property, :evidence, :summary)";
+    $sql = "INSERT INTO `case` ( reportDate, caseNumber, crime, location, reportingParty, victim, suspect, reportingDeputy, flaggedCase, agCrime, status, assignedTo, unit, assignedBy, followUpDate, complaintAction, property, evidence, cash, narcotics, weapons, summary)
+      VALUES ( :reportDate, :caseNumber, :crime, :location, :reportingParty, :victim, :suspect, :reportingDeputy, :flaggedCase, :agCrime, :status, :assignedTo, :unit, :assignedBy, :followUpDate, :complaintAction, :property, :evidence, :cash, :narcotics, :weapons, :summary)";
       
       $namedParameters = array();
       $namedParameters[':reportDate'] = $_GET['reportDate'];
@@ -55,199 +56,266 @@ if(strcmp($_GET['caseNumber'],"")==0){
     $hasError = true;
     echo "<h2><font color=red>Caught exception. Check your form. Duplicate Case Number?</font></h2>";
     function displayError(){
-      echo '<p>Error Code for the squints: ', $e->getMessage(),"\n";
+      echo '<p>Error Code for the squints: ' . $e->getMessage() . "\n";
     }
   }
 }
 }
-
+include 'navbarFuncs.php';
 
 ?>
 
 
-<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
 
-  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
-       Remove this if you use the .htaccess -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <title>MCSO New Case</title>
-  <meta name="description" content="">
-  <meta name="author" content="Brian Rono">
+    <title>MCSO Case Tracking System</title>
 
-  <meta name="viewport" content="width=device-width; initial-scale=1.0">
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="stylesheet" href="css/default.css" type="text/css" />
+    <!-- MetisMenu CSS -->
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
 
 <body>
-  <div>
-    <header>
-      <h1>New Case Form</h1>
-    </header>
 
-    <div>
-          <form>
-          <table border=1>
-            <tr>
-            <th>Report information <br>
-              <table border=1>
-                <tr>
-                  <td>Report Date:</td>
-                  <td><input type="date" name="reportDate"></td>
-                </tr>
-                <tr>
-                  <td>Case number:</td>
-                  <td><input type="text" name="caseNumber"></td>
-                </tr>
-                <tr>
-                  <td>Crime:</td>
-                  <td><input type="text" name="crime"></td>
-                </tr>
-                <tr>
-                  <td>Location:</td>
-                  <td><textarea name="location" rows="3"></textarea></td>
-                </tr>
-                <tr>
-                  <td>Reporting Party:</td>
-                  <td><input type="text" name="reportingParty"></td>
-                </tr>
-                <tr>
-                  <td>Victim:</td>
-                  <td><input type="text" name="victim"></td>
-                </tr>
-                <tr>
-                  <td>Suspect:</td>
-                  <td><input type="text" name="suspect"></td>
-                </tr>
-                <tr>
-                  <td>Reporting Deputy:</td>
-                  <td><select name="reportingDeputy">
-                       <?php
-                        $deputySQL = "SELECT * FROM `users` WHERE `active` = 1 ORDER BY lastname ASC";
-                        $deputies = getDataBySQL($deputySQL);
-                        foreach($deputies as $deputy){
-                          echo '<option value="' . $deputy['username'] . '">' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
-                        }
-                       ?>
-                    </select></td>
-                </tr>
-                <tr>
-                  <td>Flagged Case:</td>
-                  <td><input type="checkbox" name="flaggedCase" value="1"></td>
-                </tr>
-                <tr>
-                  <td>Ag Crime:</td>
-                  <td><input type="checkbox" name="agCrime" value="1"></td>
-                </tr>
-              </table>
-            </th>
-            <th>Case Assignment Information<br>
-              <table border=1>
-                <tr>
-                  <td>Status:</td>
-                  <td><select name="status">
-                       <option value="Active" >Active</option>
-                       <option value="Warrant" >Warrant</option>
-                       <option value="Closed" >Closed</option>
-                       <option value="Suspended" >Suspended</option>
-                    </select></td>
-                </tr>
-                <tr>
-                  <td>Assigned To:</td>
-                  <td><select name="assignedTo">
-                       <?php
-                        $deputySQL = "SELECT * FROM `users` WHERE `active` = 1 ORDER BY lastname ASC";
-                        $deputies = getDataBySQL($deputySQL);
-                        foreach($deputies as $deputy){
-                          echo '<option value="' . $deputy['username'] . '">' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
-                        }
-                       ?>
-                    </select></td>
-                </tr>
-                <tr>
-                  <td>Unit:</td>
-                  <td><select name="unit">
-                       <option value="SV-SA" >DV-SA</option>
-                       <option value="Narcotics" >Narcotics </option>
-                       <option value="Persons" >Persons</option>
-                       <option value="Property" >Property </option>
-                       <option value="SED" >SED </option>
-                       <option value="MADCAT" >MADCAT </option>
-                       <option value="AG Unit" >AG Unit </option>
-                    </select></td>
-                </tr>
-                <tr>
-                  <td>Assigned By</td>
-                  <td><?=$_SESSION['rank']?> <?=$_SESSION['lastname']?><input type="hidden" name="assignedBy" value="<?=$_SESSION['username']?>"/></td>
-                </tr>
-                <tr>
-                  <td>Follow Up Date:</td>
-                  <td><input type="date" name="followUpDate"></td>
-                </tr>
-                <tr>
-                  <td>Complaint Action:</td>
-                  <td><select name="complaintAction">
-                       <option value="To DA" >To DA</option>
-                       <option value="Pending Court" >Pending Court</option>
-                       <option value="Warrant Issued" >Warrant Issued</option>
-                       <option value="Other" >Other</option>
-                    </select></td>
-                </tr>
-                <tr>
-                  <td>Property:</td>
-                  <td><input type="checkbox" name="property" value="1"></td>
-                </tr>
-                <tr>
-                  <td>Evidence:</td>
-                  <td><input type="checkbox" name="evidence" value="1"></td>
-                </tr>
-                </table>
-                <center>
-                <br>Seizures<br>
-                <table border=1>
-              <tr>
-                <td>Cash:</td>
-                <td><input type="checkbox" name="cash" value="1" ></td>
-              </tr>
-              <tr>
-                <td>Narcotics:</td>
-                <td><input type="checkbox" name="narcotics" value="1"></td>
-              </tr>
-              <tr>
-                <td>Weapons:</td>
-                <td><input type="checkbox" name="weapons" value="1" ></td>
-              </tr>
-            </table>
-            </center>
-            </th>
-            </tr>
-            <tr>
-              <th colspan=2>Summary</th>
-            </tr>
-            <tr>
-              <td colspan=2><textarea name="summary" rows="10" cols="75"></textarea></td>
-            </tr>
-            </table>
-            
-          <input type="submit" value="Submit Case" name="addCase" />
-          
-      </form>
-      
-    </div>
-    <div>
-      <?php if($hasError){
+    <div id="wrapper">
+
+        <?=printNavBar();?>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Forms</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            New Case Form
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h1>Report Information</h1>
+                                    <form role="form">
+                                        <div class="form-group input-group date" id="datetimepicker1">
+                                            <label>Report Date:</label>
+                                            <input type="date" class="form-control" name="reportDate">
+                                            <!--<p class="help-block">Example block-level help text here.</p> -->
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Case Number: </label>
+                                            <input type="text" class="form-control" placeholder="Enter Case #" name="caseNumber">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Crime: </label>
+                                            <input type="text" class="form-control" placeholder="Enter Crime" name="crime">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Location: </label>
+                                            <input type="text" class="form-control" placeholder="Enter Location" name="location">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Reporting Party: </label>
+                                            <input type="text" class="form-control" placeholder="Enter Reporting Party" name="reportingParty">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Victim: </label>
+                                            <input type="text" class="form-control" placeholder="Enter Victim" name="victim">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Suspect: </label>
+                                            <input type="text" class="form-control" placeholder="Enter Suspect" name="suspect">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Reporting Deputy: </label>
+                                            <select class="form-control" name="reportingDeputy">
+                                                <?php
+                                                    $deputySQL = "SELECT * FROM `users` WHERE `active` = 1 ORDER BY lastname ASC";
+                                                    $deputies = getDataBySQL($deputySQL);
+                                                        foreach($deputies as $deputy){
+                                                            echo '<option value="' . $deputy['username'] . '">' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
+                                                        }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Checkboxes</label>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="1" name="flaggedCase">Flagged Case
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="1" name=agCrime>Ag Crime
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                <div class="col-lg-6">
+                                    <h1>Case Assignment Information</h1>
+                                    <div class="form-group">
+                                        <label>Status:</label>
+                                        <select class="form-control" name="status">
+                                            <option value="Active" >Active</option>
+                                            <option value="Warrant" >Warrant</option>
+                                            <option value="Closed" >Closed</option>
+                                            <option value="Suspended" >Suspended</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Assigned To:</label>
+                                        <select class="form-control" name="assignedTo">
+                                            <?php
+                                                $deputySQL = "SELECT * FROM `users` WHERE `active` = 1 ORDER BY lastname ASC";
+                                                $deputies = getDataBySQL($deputySQL);
+                                                foreach($deputies as $deputy){
+                                                    echo '<option value="' . $deputy['username'] . '">' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Unit:</label>
+                                        <select class="form-control" name="unit">
+                                            <option value="SV-SA" >DV-SA</option>
+                                            <option value="Narcotics" >Narcotics </option>
+                                            <option value="Persons" >Persons</option>
+                                            <option value="Property" >Property </option>
+                                            <option value="SED" >SED </option>
+                                            <option value="MADCAT" >MADCAT </option>
+                                            <option value="AG Unit" >AG Unit </option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="disabledSelect">Assigned By</label>
+                                        <select id="disabledSelect" class="form-control">
+                                            <option><?=$_SESSION['rank']?> <?=$_SESSION['lastname']?><input type="hidden" name="assignedBy" value="<?=$_SESSION['username']?>"/></option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="from-group">
+                                        <label>Follow Up Date:</label>
+                                        <input type="date" class="form-control" name="followUpDate">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Complaint Action:</label>
+                                        <select class="form-control" name="complaintAction">
+                                            <option value="To DA" >To DA</option>
+                                            <option value="Pending Court" >Pending Court</option>
+                                            <option value="Warrant Issued" >Warrant Issued</option>
+                                            <option value="Other" >Other</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Property:</label>
+                                        <input type="checkbox" name="property" value="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Evidence:</label>
+                                        <input type="checkbox" name="evidence" value="1">
+                                    </div>
+                                    
+                                    
+                                    <h2>Siezures</h2>
+                                    <div class="form-group">
+                                        <label>Cash:</label>
+                                        <input type="checkbox" name="cash" value="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Narcotics:</label>
+                                        <input type="checkbox" name="narcotics" value="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Weapons:</label>
+                                        <input type="checkbox" name="weapons" value="1">
+                                    </div>
+                                    
+                                        
+                                        
+                                    
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                            
+                            <div class="row">
+                                <div class = "col-md-12">
+                                    <div class="form-group">
+                                        <label>Summary</label>
+                                        <textarea class="form-control" rows="10" name="summary"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-default" value="Submit Case" name="addCase">Submit Button</button>
+                                    <button type="reset" class="btn btn-default">Reset Button</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.row for summary -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+<?php if($hasError){
         displayError();
       }
       ?>
     </div>
-    <footer>
-    </footer>
-  </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
 </body>
+
 </html>

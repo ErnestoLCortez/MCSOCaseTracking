@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 session_start();
 
@@ -27,13 +28,16 @@ function displayMyCases(){
     // $comments = getDataBySQL($commentSQL);
 
      //Using Form Buttons
-         echo "<table class='sortable' border=1>";
+         echo "<table width='100%' class='table table-striped table-bordered table-hover' id='dataTables-example'>";
+         echo "<thead></tr>"; //Start headers
          echo "<th>Case Number</th>";		
          echo "<th>Victim</th>";		
          echo "<th>Crime</th>";		
          echo "<th>Follow Up Date</th>";		
          echo "<th>Complaint Action</th>";
          echo "<th>Comments</th>";
+         echo "</tr></thead>";  //End headers
+         echo "<tbody>"; //Start table body
         foreach ($records as $record) {
           echo "<tr>"; 
           echo "<td>" . $record['caseNumber'] . "</td>"; 
@@ -66,6 +70,7 @@ function displayMyCases(){
               echo "<td>" . $comment['comment'] . "</td>";
               echo "</tr>";
             }
+            echo "</tbody>"; //End table body
           echo "</table>";
           echo "</td></tr>";
           //UPDATE CASE BUTTON
@@ -88,82 +93,124 @@ function displayMyCases(){
         echo "</table>";
 }
 
+
+        include 'navbarFuncs.php';
 ?>
 
 
-
-<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
 
-  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
-       Remove this if you use the .htaccess -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <title>MCSO Investigations</title>
-  <meta name="description" content="">
+    <title>MCSO Case Tracking System</title>
 
-  <meta name="viewport" content="width=device-width; initial-scale=1.0">
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="stylesheet" href="css/default.css" type="text/css" />
-  <script src="sorttable.js"></script>
+    <!-- MetisMenu CSS -->
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="../bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
 
 <body>
-  <div>
-    <header>
-      <h1>MCSO Case Menu</h1>
-    </header>
 
-   
-    <div>
-     <strong> Welcome <?=$_SESSION['rank']?> <?=$_SESSION['lastname']?>! </strong>
-     <br>
-     <table border=0>
-       <tr>
-         <td>
-           <form action="logout.php">
-              <input type="submit" value="Logout" />    
-           </form>
-          </td>
-          <td>
-           <form action="addCase.php">
-              <input type="submit" value="Add Case" />    
-           </form>
-          </td>
-          <td>
-            <form action="searchCases.php">
-              <input type="submit" value="Search Cases" />
-            </form>
-          </td>
-          <?php if($_SESSION['rank'] == "Admin" || $_SESSION['rank'] == "Commander")
-          echo '<td>
-            <form action="users.php">
-              <input type="submit" value="Add, Alter, Archive Users" />
-            </form>
-          </td>';
-          ?>
-        </tr>
-    </table>
-      <br /><br />
-      
-      
-      
-      <div>
-        <h2>Active Cases at a glance</h2>
-        <?=displayMyCases()?>
-      </div>
-      
-      
-      
+    <div id="wrapper">
+
+        
+
+        <?=printNavBar();?>
+
+
+
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Dashboard</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Cases at a Glance</h3>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">
+                                <?=displayMyCases()?>
+                            </div>
+                            <!-- /.table-responsive -->
+                            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+            
+        </div>
+        <!-- /#page-wrapper -->
+
     </div>
+    <!-- /#wrapper -->
 
-    <footer>
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 
-    </footer>
-  </div>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="../bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+    <script src="../bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
+    
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+    });
+    </script>
+
 </body>
+
 </html>

@@ -33,7 +33,11 @@ function displayAllCases(){
          echo "<tbody>";
         foreach ($records as $record) {
           echo "<tr>"; 
-          echo "<td>" . $record['caseNumber'] . "</td>"; 
+          echo "<td>
+          <form action=updateCase.php>
+          <a href='#' onclick='$(this).closest(\"form\").submit(); return false;'>" . $record['caseNumber'] . "</a>
+          <input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>
+          </td></form>";  
           echo "<td>" . $record['victim'] . "</td>";
           echo "<td>" . $record['crime'] . "</td>";
           
@@ -52,7 +56,7 @@ function displayAllCases(){
               $comments = getDataBySQL($com);
               $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
               $deputies = getDataBySQL($deputySQL);
-          echo "<td><table border=1>"; //Limit the size of the comments table
+          echo "<td><table>"; //Limit the size of the comments table
           echo '<col width="150">';
           echo '<col width="150">';
           echo '<col width="500">';
@@ -73,20 +77,16 @@ function displayAllCases(){
               echo "<td>" . $comment['comment'] . "</td>";
               echo "</tr>";
             }
-          echo "</tbody>"; //End table body
           echo "</table>";
-          echo "</td></tr>";
-          //UPDATE CASE BUTTON
-          echo "<td> <form action=updateCase.php>";
-          echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
-          echo "<input type='submit' value='View Case'/></form> </td>";
+          
           
           //COMMENT ON CASE BUTTON
           echo "<td> <form action=commentCase.php>";
           echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
           echo "<input type='submit' value='Comment On Case'/></form> </td>";
+          echo "</tr>";
         } //endForeach
-        
+        echo "</tbody>";
         echo "</table>";
 }
 

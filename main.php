@@ -40,7 +40,11 @@ function displayMyCases(){
          echo "<tbody>"; //Start table body
         foreach ($records as $record) {
           echo "<tr>"; 
-          echo "<td>" . $record['caseNumber'] . "</td>"; 
+          echo "<td>
+          <form action=updateCase.php>
+          <a href='#' onclick='$(this).closest(\"form\").submit(); return false;'>" . $record['caseNumber'] . "</a>
+          <input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>
+          </td></form>"; 
           echo "<td>" . $record['victim'] . "</td>";
           echo "<td>" . $record['crime'] . "</td>";
           echo "<td>" . $record['followUpDate'] . "</td>";
@@ -71,24 +75,14 @@ function displayMyCases(){
               echo "</tr>";
             }
             
-          echo "</table>";
-          echo "</td></tr>";
-          //UPDATE CASE BUTTON
-          echo "<td> <form action=updateCase.php>";
-          echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
-          echo "<input type='submit' value='View Case'/></form> </td>";
-          
+          echo "</table>";  //End comments table
+          //echo "</td>";
           //COMMENT ON CASE BUTTON
-          echo "<td> <form action=commentCase.php>";
+          echo "<form action=commentCase.php>";
           echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
-          echo "<input type='submit' value='Comment On Case'/></form> </td>";
-          
-          //DELETE CASE BUTTON
-          echo "<td> <form action=archiveCase.php>";
-          echo "<input type='hidden' name='caseNumber' value='".$record['caseNumber'] . "'/>";
-          echo "<input type='submit' value='Finalize/Archive Case'/></form> </td>";
+          echo "<input type='submit' value='Add Comment'/></form> </td>";
           echo "</tr>";
-          echo "</tr>";
+         
         } //endForeach
         echo "</tbody>"; //End table body
         echo "</table>";
@@ -211,6 +205,9 @@ function displayMyCases(){
         });
     });
     </script>
+
+
+
 
 </body>
 

@@ -49,7 +49,7 @@ function displayMyCases(){
               $comments = getDataBySQL($com);
               $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
               $deputies = getDataBySQL($deputySQL);
-          echo "<td><table border=1>"; //Limit the size of the comments table
+          echo "<td><table table-striped table-bordered table-hover>"; //Limit the size of the comments table
           echo '<col width="150">';
           echo '<col width="150">';
           echo '<col width="500">';
@@ -70,7 +70,7 @@ function displayMyCases(){
               echo "<td>" . $comment['comment'] . "</td>";
               echo "</tr>";
             }
-            echo "</tbody>"; //End table body
+            
           echo "</table>";
           echo "</td></tr>";
           //UPDATE CASE BUTTON
@@ -90,6 +90,7 @@ function displayMyCases(){
           echo "</tr>";
           echo "</tr>";
         } //endForeach
+        echo "</tbody>"; //End table body
         echo "</table>";
 }
 

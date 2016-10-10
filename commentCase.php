@@ -8,7 +8,9 @@ if (!isset($_SESSION['username'])) {  //checks whether user has logged in
 include 'dbConn.php';
 $connection = dbConn();
 
-echo "<a href='main.php'>Home</a><br>";
+include 'navbarFuncs.php';
+
+// echo "<a href='main.php'>Home</a><br>";
 
 if (isset($_GET['commentCase'])) {  //admin submitted form to add product
     
@@ -38,6 +40,7 @@ if (isset($_GET['commentCase'])) {  //admin submitted form to add product
 </head>
 
 <body>
+  
   <div>
     <header>
       <h1>Add Comment</h1>

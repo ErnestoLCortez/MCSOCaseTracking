@@ -54,29 +54,28 @@ if (isset($_GET['updateCase'])) {  //submit the updated case information
           WHERE caseNumber = :caseNumber";
     
     $namedParameters = array();
-    $namedParameters[':reportDate'] = $_GET['reportDate'];
-    $namedParameters[':caseNumber'] = $_GET['caseNumber'];
-    $namedParameters[':crime'] = $_GET['crime'];
-    $namedParameters[':location'] = $_GET['location'];
-    $namedParameters[':reportingParty'] = $_GET['reportingParty'];
-    $namedParameters[':victim'] = $_GET['victim'];
-    $namedParameters[':suspect'] = $_GET['suspect'];
-    $namedParameters[':reportingDeputy'] = $_GET['reportingDeputy'];
-    $namedParameters[':flaggedCase'] = $_GET['flaggedCase'];
-    $namedParameters[':agCrime'] = $_GET['agCrime'];
-    $namedParameters[':status'] = $_GET['status'];
-    $namedParameters[':assignedTo'] = $_GET['assignedTo'];
-    $namedParameters[':unit'] = $_GET['unit'];
-    $namedParameters[':assignedBy'] = $_GET['assignedBy'];
-    $namedParameters[':followUpDate'] = $_GET['followUpDate'];
-    $namedParameters[':complaintAction'] = $_GET['complaintAction'];
-    $namedParameters[':property'] = $_GET['property'];
-    $namedParameters[':evidence'] = $_GET['evidence'];
-    $namedParameters[':cash'] = $_GET['cash'];
-    $namedParameters[':narcotics'] = $_GET['narcotics'];
-    $namedParameters[':weapons'] = $_GET['weapons'];
-    $namedParameters[':summary'] = $_GET['summary'];
-    $namedParameters[':caseNumber'] = $_GET['caseNumber'];
+	$namedParameters[':reportDate'] = $_GET['reportDate'];
+	$namedParameters[':caseNumber'] = $_GET['caseNumber'];
+	$namedParameters[':crime'] = $_GET['crime'];
+	$namedParameters[':location'] = $_GET['location'];
+	$namedParameters[':reportingParty'] = $_GET['reportingParty'];
+	$namedParameters[':victim'] = $_GET['victim'];
+	$namedParameters[':suspect'] = $_GET['suspect'];
+	$namedParameters[':reportingDeputy'] = $_GET['reportingDeputy'];
+	$namedParameters[':flaggedCase'] = !isset($_GET['flaggedCase']) ? 0:1;
+	$namedParameters[':agCrime'] = !isset($_GET['agCrime']) ? 0:1;
+	$namedParameters[':status'] = $_GET['status'];
+	$namedParameters[':assignedTo'] = $_GET['assignedTo'];
+	$namedParameters[':unit'] = $_GET['unit'];
+	$namedParameters[':assignedBy'] = $_GET['assignedBy'];
+	$namedParameters[':followUpDate'] = $_GET['followUpDate'];
+	$namedParameters[':complaintAction'] = $_GET['complaintAction'];
+	$namedParameters[':property'] = !isset($_GET['property']) ? 0:1;
+	$namedParameters[':evidence'] = !isset($_GET['evidence']) ? 0:1;
+	$namedParameters[':cash'] = !isset($_GET['cash']) ? 0:1;
+	$namedParameters[':narcotics'] = !isset($_GET['narcotics']) ? 0:1;
+	$namedParameters[':weapons'] = !isset($_GET['weapons']) ? 0:1;
+	$namedParameters[':summary'] = $_GET['summary'];
     
     
   $conn = dbConn();    
@@ -117,29 +116,28 @@ if (isset($_GET['archiveCase'])) {  //submit the finalize case information to be
           WHERE caseNumber = :caseNumber";
     
     $namedParameters = array();
-    $namedParameters[':reportDate'] = $_GET['reportDate'];
-    $namedParameters[':caseNumber'] = $_GET['caseNumber'];
-    $namedParameters[':crime'] = $_GET['crime'];
-    $namedParameters[':location'] = $_GET['location'];
-    $namedParameters[':reportingParty'] = $_GET['reportingParty'];
-    $namedParameters[':victim'] = $_GET['victim'];
-    $namedParameters[':suspect'] = $_GET['suspect'];
-    $namedParameters[':reportingDeputy'] = $_GET['reportingDeputy'];
-    $namedParameters[':flaggedCase'] = $_GET['flaggedCase'];
-    $namedParameters[':agCrime'] = $_GET['agCrime'];
-    $namedParameters[':status'] = $_GET['status'];
-    $namedParameters[':assignedTo'] = $_GET['assignedTo'];
-    $namedParameters[':unit'] = $_GET['unit'];
-    $namedParameters[':assignedBy'] = $_GET['assignedBy'];
-    $namedParameters[':followUpDate'] = $_GET['followUpDate'];
-    $namedParameters[':complaintAction'] = $_GET['complaintAction'];
-    $namedParameters[':property'] = $_GET['property'];
-    $namedParameters[':evidence'] = $_GET['evidence'];
-    $namedParameters[':cash'] = $_GET['cash'];
-    $namedParameters[':narcotics'] = $_GET['narcotics'];
-    $namedParameters[':weapons'] = $_GET['weapons'];
-    $namedParameters[':summary'] = $_GET['summary'];
-    $namedParameters[':caseNumber'] = $_GET['caseNumber'];
+	$namedParameters[':reportDate'] = $_GET['reportDate'];
+	$namedParameters[':caseNumber'] = $_GET['caseNumber'];
+	$namedParameters[':crime'] = $_GET['crime'];
+	$namedParameters[':location'] = $_GET['location'];
+	$namedParameters[':reportingParty'] = $_GET['reportingParty'];
+	$namedParameters[':victim'] = $_GET['victim'];
+	$namedParameters[':suspect'] = $_GET['suspect'];
+	$namedParameters[':reportingDeputy'] = $_GET['reportingDeputy'];
+	$namedParameters[':flaggedCase'] = !isset($_GET['flaggedCase']) ? 0:1;
+	$namedParameters[':agCrime'] = !isset($_GET['agCrime']) ? 0:1;
+	$namedParameters[':status'] = $_GET['status'];
+	$namedParameters[':assignedTo'] = $_GET['assignedTo'];
+	$namedParameters[':unit'] = $_GET['unit'];
+	$namedParameters[':assignedBy'] = $_GET['assignedBy'];
+	$namedParameters[':followUpDate'] = $_GET['followUpDate'];
+	$namedParameters[':complaintAction'] = $_GET['complaintAction'];
+	$namedParameters[':property'] = !isset($_GET['property']) ? 0:1;
+	$namedParameters[':evidence'] = !isset($_GET['evidence']) ? 0:1;
+	$namedParameters[':cash'] = !isset($_GET['cash']) ? 0:1;
+	$namedParameters[':narcotics'] = !isset($_GET['narcotics']) ? 0:1;
+	$namedParameters[':weapons'] = !isset($_GET['weapons']) ? 0:1;
+	$namedParameters[':summary'] = $_GET['summary'];
     
     
   $conn = dbConn();    
@@ -177,30 +175,29 @@ if(isset($_GET['activateCase'])){
           summary = :summary
           WHERE caseNumber = :caseNumber";
     
-    $namedParameters = array();
-    $namedParameters[':reportDate'] = $_GET['reportDate'];
-    $namedParameters[':caseNumber'] = $_GET['caseNumber'];
-    $namedParameters[':crime'] = $_GET['crime'];
-    $namedParameters[':location'] = $_GET['location'];
-    $namedParameters[':reportingParty'] = $_GET['reportingParty'];
-    $namedParameters[':victim'] = $_GET['victim'];
-    $namedParameters[':suspect'] = $_GET['suspect'];
-    $namedParameters[':reportingDeputy'] = $_GET['reportingDeputy'];
-    $namedParameters[':flaggedCase'] = $_GET['flaggedCase'];
-    $namedParameters[':agCrime'] = $_GET['agCrime'];
-    $namedParameters[':status'] = $_GET['status'];
-    $namedParameters[':assignedTo'] = $_GET['assignedTo'];
-    $namedParameters[':unit'] = $_GET['unit'];
-    $namedParameters[':assignedBy'] = $_GET['assignedBy'];
-    $namedParameters[':followUpDate'] = $_GET['followUpDate'];
-    $namedParameters[':complaintAction'] = $_GET['complaintAction'];
-    $namedParameters[':property'] = $_GET['property'];
-    $namedParameters[':evidence'] = $_GET['evidence'];
-    $namedParameters[':cash'] = $_GET['cash'];
-    $namedParameters[':narcotics'] = $_GET['narcotics'];
-    $namedParameters[':weapons'] = $_GET['weapons'];
-    $namedParameters[':summary'] = $_GET['summary'];
-    $namedParameters[':caseNumber'] = $_GET['caseNumber'];
+	  $namedParameters = array();
+      $namedParameters[':reportDate'] = $_GET['reportDate'];
+      $namedParameters[':caseNumber'] = $_GET['caseNumber'];
+      $namedParameters[':crime'] = $_GET['crime'];
+      $namedParameters[':location'] = $_GET['location'];
+      $namedParameters[':reportingParty'] = $_GET['reportingParty'];
+      $namedParameters[':victim'] = $_GET['victim'];
+      $namedParameters[':suspect'] = $_GET['suspect'];
+      $namedParameters[':reportingDeputy'] = $_GET['reportingDeputy'];
+      $namedParameters[':flaggedCase'] = !isset($_GET['flaggedCase']) ? 0:1;
+      $namedParameters[':agCrime'] = !isset($_GET['agCrime']) ? 0:1;
+      $namedParameters[':status'] = $_GET['status'];
+      $namedParameters[':assignedTo'] = $_GET['assignedTo'];
+      $namedParameters[':unit'] = $_GET['unit'];
+      $namedParameters[':assignedBy'] = $_GET['assignedBy'];
+      $namedParameters[':followUpDate'] = $_GET['followUpDate'];
+      $namedParameters[':complaintAction'] = $_GET['complaintAction'];
+      $namedParameters[':property'] = !isset($_GET['property']) ? 0:1;
+      $namedParameters[':evidence'] = !isset($_GET['evidence']) ? 0:1;
+      $namedParameters[':cash'] = !isset($_GET['cash']) ? 0:1;
+      $namedParameters[':narcotics'] = !isset($_GET['narcotics']) ? 0:1;
+      $namedParameters[':weapons'] = !isset($_GET['weapons']) ? 0:1;
+      $namedParameters[':summary'] = $_GET['summary'];
     
     
   $conn = dbConn();    
@@ -332,7 +329,7 @@ if(isset($_GET['activateCase'])){
                                             </div>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" value="1" name=agCrime <?php if($case['agCrime'] == "1"){echo "checked";}?>>Ag Crime
+                                                    <input type="checkbox" value="1" name="agCrime" <?php if($case['agCrime'] == "1"){echo "checked";}?>>Ag Crime
                                                 </label>
                                             </div>
                                         </div>
@@ -354,19 +351,19 @@ if(isset($_GET['activateCase'])){
                                     </div>
                                     <div class="form-group">
                                         <label>Assigned To:</label>
-                                        <select name="assignedTo">
-                       <?php
-                        $deputySQL = "SELECT * FROM `users` WHERE `active` = 1 ORDER BY lastname ASC";
-                        $deputies = getDataBySQL($deputySQL);
-                        foreach($deputies as $deputy){
-                          echo '<option value="' . $deputy['username'] . '"';
-                          if($deputy['username'] == $case['assignedTo']){
-                            echo " selected ";
-                          }
-                          echo ' >' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
-                        }
-                       ?>
-                    </select>
+                                        <select class="form-control" name="assignedTo">
+										   <?php
+											$deputySQL = "SELECT * FROM `users` WHERE `active` = 1 ORDER BY lastname ASC";
+											$deputies = getDataBySQL($deputySQL);
+											foreach($deputies as $deputy){
+											  echo '<option value="' . $deputy['username'] . '"';
+											  if($deputy['username'] == $case['assignedTo']){
+												echo " selected ";
+											  }
+											  echo ' >' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
+											}
+										   ?>
+										</select>
                                     </div>
                                     <div class="form-group">
                                         <label>Unit:</label>
@@ -383,18 +380,18 @@ if(isset($_GET['activateCase'])){
                                     
                                     <div class="form-group">
                                         <label for="disabledSelect">Assigned By</label>
-                                        <select id="disabledSelect" class="form-control">
+                                        <select id="disabledSelect" class="form-control" name="assignedBy">
                                             <?php
-                        $deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
-                        $deputies = getDataBySQL($deputySQL);
-                        foreach($deputies as $deputy){
-                          echo '<option value="' . $deputy['username'] . '"';
-                          if($deputy['username'] == $case['assignedBy']){
-                            echo " selected ";
-                          }
-                          echo ' >' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
-                        }
-                       ?>
+												$deputySQL = "SELECT * FROM `users` ORDER BY lastname ASC";
+												$deputies = getDataBySQL($deputySQL);
+												foreach($deputies as $deputy){
+												  echo '<option value="' . $deputy['username'] . '"';
+												  if($deputy['username'] == $case['assignedBy']){
+													echo " selected ";
+												  }
+												  echo ' >' . $deputy['rank'] . ' ' . $deputy['lastname'] . '</option>';
+												}
+										   ?>
                                         </select>
                                     </div>
                                     

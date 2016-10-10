@@ -57,7 +57,11 @@ $records = getDataBySQL($sql);
  echo "</tr></thead>";
 foreach ($records as $record) {
   echo "<tr>"; 
-  echo "<td>" . $record['caseNumber'] . "</td>"; 
+  echo "<td>
+          <form action=updateCase.php>
+          <a href='#' onclick='$(this).closest(\"form\").submit(); return false;'>" . $record['caseNumber'] . "</a>
+          <input type='hidden' name='caseNumber' value='" . $record['caseNumber'] . "'/>
+          </td></form>";  
   echo "<td>" . $record['victim'] . "</td>";
   echo "<td>" . $record['crime'] . "</td>";
   //Display the detective assigned to the case
@@ -70,7 +74,7 @@ foreach ($records as $record) {
   echo "</td>";
           
   echo "<td>" . $record['complaintAction'] . "</td>";
-      $com = "Select * FROM `comments` a WHERE a.casenumber = '" . $record['casenumber'] . "' ORDER BY commentDate DESC";
+      $com = "Select * FROM `comments` a WHERE a.casenumber = '" . $record['caseNumber'] . "' ORDER BY commentDate DESC";
       $comments = getDataBySQL($com);
   echo "<td><table border=1>";
     foreach($comments as $comment){
@@ -81,17 +85,11 @@ foreach ($records as $record) {
     }
   
   echo "</table>";
-  echo "</td></tr>";
-  //UPDATE CASE BUTTON
-  echo "<td> <form action=updateCase.php>";
-  echo "<input type='hidden' name='casenumber' value='".$record['casenumber'] . "'/>";
-  echo "<input type='submit' value='View Case'/></form> </td>";
-  
   //COMMENT ON CASE BUTTON
-  echo "<td> <form action=commentCase.php>";
-  echo "<input type='hidden' name='casenumber' value='".$record['casenumber'] . "'/>";
-  echo "<input type='submit' value='Comment On Case'/></form> </td>";
-  
+          echo "<td> <form action=commentCase.php>";
+          echo "<input type='hidden' name='caseNumber' value='" . $record['caseNumber'] . "'/>";
+          echo "<input type='submit' value='Comment On Case'/></form> </td>";
+          echo "</tr>";
 } //endForeach
 echo "</tbody>"; //End table body
 echo "</table>";

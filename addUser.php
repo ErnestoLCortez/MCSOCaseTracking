@@ -3,7 +3,7 @@ session_start();
 include 'dbConn.php';
 echo "<a href='main.php'>Home</a>";
 $connection = dbConn();
-
+$hasUpdate = false;
 if (!isset($_SESSION['username'])) {  //checks whether user has logged in
     
     header("Location: index.php");
@@ -85,7 +85,7 @@ if (isset($_GET['updateUser'])) {
     </header>
 <body>
     <?php
-        if($_SESSION['rank'] == "Sergeant" || $_SESSION['rank'] == "Detective"){
+        if($_SESSION['rank'] == "Detective" || $_SESSION['rank'] == "Deputy"){
             echo '<script>levelAccess()</script>';
             // header("location:javascript://history.go(-1)");
             header("location:main.php");
@@ -97,10 +97,10 @@ if (isset($_GET['updateUser'])) {
         <tr>
             <th>Rank</th>
             <td><select name="rank">
-                <option value="Commander" <?php if($user['rank'] == "Commander"){echo "selected";}?>>Commander</option>
-                <option value="Admin" <?php if($user['rank'] == "Admin"){echo "selected";}?>>Admin</option>
-                <option value="Sergeant" <?php if($user['rank'] == "Sergeant"){echo "selected";}?>>Sergeant</option>
-                <option value="Deputy" <?php if($user['rank'] == "Deputy"){echo "selected";}?>>Deputy</option>
+                <option value="Commander">Commander</option>
+                <option value="Admin">Admin</option>
+                <option value="Sergeant">Sergeant</option>
+                <option value="Deputy">Deputy</option>
             </select></td>
         </tr>
         <tr>

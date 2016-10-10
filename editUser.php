@@ -102,7 +102,7 @@ if (isset($_GET['updateUser'])) {
     </header>
 <body>
     <?php
-        if($_SESSION['rank'] == "Sergeant" || $_SESSION['rank'] == "Detective"){
+        if($_SESSION['rank'] == "Detective" || $_SESSION['rank'] == "Deputy"){
             echo '<script>levelAccess()</script>';
             header("location:main.php");
         }

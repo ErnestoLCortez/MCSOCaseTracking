@@ -79,7 +79,7 @@ function displayAllUsers(){
     </header>
 <body>
     <?php
-        if($_SESSION['rank'] == "Sergeant" || $_SESSION['rank'] == "Detective"){
+        if($_SESSION['rank'] == "Deputy" || $_SESSION['rank'] == "Detective"){
             echo '<script>levelAccess()</script>';
             // header("location:javascript://history.go(-1)");
             header("location:main.php");

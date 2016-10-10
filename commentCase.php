@@ -9,13 +9,6 @@ if (!isset($_SESSION['username'])) {  //checks whether user has logged in
 include 'dbConn.php';
 $connection = dbConn();
 
-<<<<<<< HEAD
-include 'navbarFuncs.php';
-
-// echo "<a href='main.php'>Home</a><br>";
-
-=======
->>>>>>> 077b017984179141a0e35572e723283ed62f701b
 if (isset($_GET['commentCase'])) {  //admin submitted form to add product
     
   
@@ -79,17 +72,6 @@ if (isset($_GET['commentCase'])) {  //admin submitted form to add product
 </head>
 
 <body>
-<<<<<<< HEAD
-  
-  <div>
-    <header>
-      <h1>Add Comment</h1>
-    </header>
-
-    <div>
-      <h4>Comment History</h4>
-      <?php
-=======
 
     <div id="wrapper">
 
@@ -118,7 +100,6 @@ if (isset($_GET['commentCase'])) {  //admin submitted form to add product
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
                                 <?php
->>>>>>> 077b017984179141a0e35572e723283ed62f701b
         $connection = dbConn();
         $com = "Select * FROM `comments` WHERE caseNumber = '" . $_GET['caseNumber'] . "' ORDER BY commentDate ASC";
         $comments = getDataBySQL($com);

@@ -46,15 +46,13 @@ $records = getDataBySQL($sql);
 
 
 // Execute the query
- echo "<table class='table table-striped table-bordered table-hover sortable' id='dataTables-example'>";
- echo "<thead></tr>";  //Start headers
+ echo "<table class='sortable' border=1>";
  echo "<th>Case Number</th>";		
  echo "<th>Victim</th>";		
  echo "<th>Crime</th>";		
  echo "<th>Assigned To</th>";		
  echo "<th>Complaint Action</th>";
  echo "<th>Comments</th>";
- echo "</tr></thead>";
 foreach ($records as $record) {
   echo "<tr>"; 
   echo "<td>" . $record['caseNumber'] . "</td>"; 
@@ -79,7 +77,6 @@ foreach ($records as $record) {
       echo "<td>" . $comment['comment'] . "</td>";
       echo "</tr>";
     }
-  
   echo "</table>";
   echo "</td></tr>";
   //UPDATE CASE BUTTON
@@ -93,6 +90,5 @@ foreach ($records as $record) {
   echo "<input type='submit' value='Comment On Case'/></form> </td>";
   
 } //endForeach
-echo "</tbody>"; //End table body
 echo "</table>";
 ?>

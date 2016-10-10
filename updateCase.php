@@ -152,12 +152,57 @@ if (isset($_GET['archiveCase'])) {  //submit the finalize case information to be
 
 if(isset($_GET['activateCase'])){
     $sql = "UPDATE `case`
-          SET active = 1
+          SET reportDate = :reportDate,
+          active = 1,
+          caseNumber = :caseNumber,
+          crime = :crime,
+          location = :location,
+          reportingParty = :reportingParty,
+          victim = :victim,
+          suspect = :suspect,
+          reportingDeputy = :reportingDeputy,
+          flaggedCase = :flaggedCase,
+          agCrime = :agCrime,
+          status = :status,
+          assignedTo = :assignedTo,
+          unit = :unit,
+          assignedBy = :assignedBy,
+          followUpDate = :followUpDate,
+          complaintAction = :complaintAction,
+          property = :property,
+          evidence = :evidence,
+          cash = :cash,
+          narcotics = :narcotics,
+          weapons = :weapons,
+          summary = :summary
           WHERE caseNumber = :caseNumber";
     
-  $namedParameters = array();
-  $namedParameters[':caseNumber'] = $_GET['caseNumber'];
-  
+    $namedParameters = array();
+    $namedParameters[':reportDate'] = $_GET['reportDate'];
+    $namedParameters[':caseNumber'] = $_GET['caseNumber'];
+    $namedParameters[':crime'] = $_GET['crime'];
+    $namedParameters[':location'] = $_GET['location'];
+    $namedParameters[':reportingParty'] = $_GET['reportingParty'];
+    $namedParameters[':victim'] = $_GET['victim'];
+    $namedParameters[':suspect'] = $_GET['suspect'];
+    $namedParameters[':reportingDeputy'] = $_GET['reportingDeputy'];
+    $namedParameters[':flaggedCase'] = $_GET['flaggedCase'];
+    $namedParameters[':agCrime'] = $_GET['agCrime'];
+    $namedParameters[':status'] = $_GET['status'];
+    $namedParameters[':assignedTo'] = $_GET['assignedTo'];
+    $namedParameters[':unit'] = $_GET['unit'];
+    $namedParameters[':assignedBy'] = $_GET['assignedBy'];
+    $namedParameters[':followUpDate'] = $_GET['followUpDate'];
+    $namedParameters[':complaintAction'] = $_GET['complaintAction'];
+    $namedParameters[':property'] = $_GET['property'];
+    $namedParameters[':evidence'] = $_GET['evidence'];
+    $namedParameters[':cash'] = $_GET['cash'];
+    $namedParameters[':narcotics'] = $_GET['narcotics'];
+    $namedParameters[':weapons'] = $_GET['weapons'];
+    $namedParameters[':summary'] = $_GET['summary'];
+    $namedParameters[':caseNumber'] = $_GET['caseNumber'];
+    
+    
   $conn = dbConn();    
   $statement = $conn->prepare($sql);
   $statement->execute($namedParameters);  

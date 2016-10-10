@@ -59,7 +59,7 @@ function displayMyCases(){
           echo '<col width="500">';
           $atFive = 0;
             foreach($comments as $comment){
-              if($atFive == 5){
+              if($atFive == 3){
                 break;
               }
               echo "<tr>";
